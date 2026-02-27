@@ -1,8 +1,5 @@
-let packetQueue = [];
-let latestPacket = null;
+let currentPacketRef = null;
 let currentRunText = null;
-
-let paneTimer = null;
 let outputTimer = null;
 
 function updateCharCount(){
@@ -24,8 +21,12 @@ window.send = function(){
   updateCharCount();
 };
 
-window.renderIncoming = function(text){
-  latestPacket = text;
+window.renderIncoming = function(text, ref){
+
+  // Prevent overwriting active packet
+  if(currentPacketRef) return;
+
+  currentPacketRef = ref;
   currentRunText = text;
 
   const code = buildDecoderCode(text);
@@ -35,10 +36,13 @@ window.renderIncoming = function(text){
 
   document.getElementById('runBtn').style.display = 'inline-block';
 
-  openRightPane(); // This now controls its own timer
+  openRightPane();
 };
 
 window.runDecoder = function(){
+
+  if(!currentPacketRef) return;
+
   const scroll = document.getElementById('decoderScroll');
 
   const outputBlock = document.createElement('div');
@@ -53,11 +57,6 @@ window.runDecoder = function(){
 
   scroll.appendChild(outputBlock);
 
-  // Clear old timer if exists
-  if(outputTimer){
-    clearTimeout(outputTimer);
-  }
-
   let remaining = 3;
   const badge = outputBlock.querySelector('.output-timer-badge');
 
@@ -70,23 +69,24 @@ window.runDecoder = function(){
 
   outputTimer = setTimeout(()=>{
     clearInterval(countdown);
+
     outputBlock.remove();
+
+    // Delete from Firebase AFTER run
+    currentPacketRef.remove();
+
+    // Reset state
+    currentPacketRef = null;
+    currentRunText = null;
+
+    closeRightPane();
+
   },3000);
 };
 
 window.openRightPane = function(){
   const pane = document.getElementById('rightPane');
-
   pane.classList.add('open');
-
-  // Clear existing timer
-  if(paneTimer){
-    clearTimeout(paneTimer);
-  }
-
-  paneTimer = setTimeout(()=>{
-    closeRightPane();
-  },5000);
 };
 
 window.closeRightPane = function(){

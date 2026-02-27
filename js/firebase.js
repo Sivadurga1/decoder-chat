@@ -3,7 +3,7 @@ let db, messagesRef, myId;
 window.addEventListener('load', function(){
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCG9O3OwxU-4f6IDsNNSGL1BRDDgYMFuUw",
+    apiKey: "AIzaSyDEdb0fZfCbxYIdlU_I65mq_wpEJtCdzRs",
     authDomain: "realtime-snippet-runner.firebaseapp.com",
     databaseURL: "https://realtime-snippet-runner-default-rtdb.firebaseio.com",
     projectId: "realtime-snippet-runner",
@@ -27,7 +27,6 @@ window.addEventListener('load', function(){
     if(!data) return;
     if(data.sender === myId) return;
 
-    renderIncoming(data.text);
-    setTimeout(()=> snapshot.ref.remove(), 3000);
+    renderIncoming(data.text, snapshot.ref);
   });
 });
