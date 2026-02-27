@@ -1,6 +1,7 @@
 let db, messagesRef, myId;
+let latestPacketKey = null;
 
-window.addEventListener('load', function(){
+window.addEventListener('load', function () {
 
   const firebaseConfig = {
     apiKey: "AIzaSyCOjZBKezzBnWhNn8mzuNcfMGInj0gAuyw",
@@ -13,21 +14,24 @@ window.addEventListener('load', function(){
   };
 
   firebase.initializeApp(firebaseConfig);
+
   db = firebase.database();
   messagesRef = db.ref("packets");
 
+  // Unique browser ID
   myId = localStorage.getItem("devsnippet_id");
-  if(!myId){
+  if (!myId) {
     myId = crypto.randomUUID();
     localStorage.setItem("devsnippet_id", myId);
   }
 
-  messagesRef.on("child_added", snapshot=>{
+  messagesRef.on("child_added", snapshot => {
     const data = snapshot.val();
-    if(!data) return;
-    if(data.sender === myId) return;
+    if (!data) return;
+    if (data.sender === myId) return;
 
+    latestPacketKey = snapshot.key; // store packet key
     renderIncoming(data.text);
-    setTimeout(()=> snapshot.ref.remove(), 3000);
   });
+
 });
