@@ -1,6 +1,5 @@
 let latestPacket = null;
 let currentRunText = null;
-
 let outputTimer = null;
 
 function updateCharCount() {
@@ -37,6 +36,8 @@ window.renderIncoming = function (text) {
 };
 
 window.runDecoder = function () {
+  if (!currentRunText) return;
+
   const scroll = document.getElementById('decoderScroll');
 
   const outputBlock = document.createElement('div');
@@ -50,6 +51,12 @@ window.runDecoder = function () {
   `;
 
   scroll.appendChild(outputBlock);
+
+  // Prevent stacked timers
+  if (outputTimer) {
+    clearTimeout(outputTimer);
+    outputTimer = null;
+  }
 
   let remaining = 3;
   const badge = outputBlock.querySelector('.output-timer-badge');
@@ -65,13 +72,15 @@ window.runDecoder = function () {
     clearInterval(countdown);
     outputBlock.remove();
 
-    // Delete packet AFTER run
-    if (latestPacketKey) {
+    // Delete packet AFTER execution
+    if (typeof latestPacketKey !== "undefined" && latestPacketKey) {
       messagesRef.child(latestPacketKey).remove();
       latestPacketKey = null;
     }
 
     closeRightPane();
+    currentRunText = null;
+
   }, 3000);
 };
 
