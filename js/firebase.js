@@ -3,7 +3,7 @@ let db, messagesRef, myId;
 window.addEventListener('load', function(){
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCG9O3OwxU-4f6IDsNNSGL1BRDDgYMFuUw",
+    apiKey: "AIzaSyCOjZBKezzBnWhNn8mzuNcfMGInj0gAuyw",
     authDomain: "realtime-snippet-runner.firebaseapp.com",
     databaseURL: "https://realtime-snippet-runner-default-rtdb.firebaseio.com",
     projectId: "realtime-snippet-runner",
