@@ -10,6 +10,17 @@
 </head>
 <body>
 
+<!-- LOGIN SCREEN -->
+<div id="loginBox" style="display:none; height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; background:#0f1117; color:white;">
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email" style="padding:8px; width:250px;">
+  <input id="password" type="password" placeholder="Password" style="padding:8px; width:250px;">
+  <button onclick="login()" style="padding:8px 16px;">Login</button>
+</div>
+
+<!-- APP WRAPPER -->
+<div id="app" style="display:none;">
+
 <!-- TOPBAR -->
 <div class="topbar">
   <span class="topbar-logo">DevSnippet</span>
@@ -19,6 +30,7 @@
   <div class="topbar-right">
     <span style="font-size:10px;color:var(--muted2)">LIVE</span>
     <div class="connection-dot"></div>
+    <button onclick="logout()" style="margin-left:10px;">Logout</button>
   </div>
 </div>
 
@@ -101,7 +113,11 @@
   <span id="cursorPos">Ln 1, Col 1</span>
 </div>
 
+</div> <!-- END APP -->
+
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script src="js/utils.js"></script>
