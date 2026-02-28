@@ -28,8 +28,7 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:'JetBrains Mono',monospace;
-  height:100vh;
-  display:flex;flex-direction:column;overflow:hidden;
+  margin:0;
 }
 
 body::before{
@@ -431,4 +430,11 @@ button.send:active{transform:translateY(0);}
   transform: translateY(-2px);
   filter: brightness(1.1);
   box-shadow: 0 10px 25px rgba(91,156,255,0.4);
+}
+
+#app{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
