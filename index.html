@@ -11,117 +11,107 @@
 <body>
 
 <!-- LOGIN SCREEN -->
-<div id="loginBox" class="login-wrapper">
-  <div class="login-card">
-    <div class="login-title">DevSnippet</div>
-    <div class="login-sub">Restricted Access</div>
+<div id="loginBox" style="display:none; height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; background:#0f1117; color:white;">
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email" style="padding:8px; width:250px;">
+  <input id="password" type="password" placeholder="Password" style="padding:8px; width:250px;">
+  <button onclick="login()" style="padding:8px 16px;">Login</button>
+</div>
 
-    <div class="login-field">
-      <input type="email" id="email" placeholder="Email">
-    </div>
+<!-- APP WRAPPER -->
+<div id="app" style="display:none;">
 
-    <div class="login-field">
-      <input type="password" id="password" placeholder="Password">
-    </div>
-
-    <button class="login-btn" onclick="login()">Login</button>
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="topbar-logo">DevSnippet</span>
+  <div class="topbar-menu">
+    <span>File</span><span>Edit</span><span>View</span><span>Run</span><span>Terminal</span>
+  </div>
+  <div class="topbar-right">
+    <span style="font-size:10px;color:var(--muted2)">LIVE</span>
+    <div class="connection-dot"></div>
+    <button onclick="logout()" style="margin-left:10px;">Logout</button>
   </div>
 </div>
 
-<!-- APP WRAPPER (HIDDEN UNTIL LOGIN) -->
-<div id="app" style="display:none;">
+<div class="toast" id="toast"></div>
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <span class="topbar-logo">DevSnippet</span>
-    <div class="topbar-menu">
-      <span>File</span><span>Edit</span><span>View</span><span>Run</span><span>Terminal</span>
+<div class="main">
+
+  <div class="sidebar">
+    <div class="sidebar-header">Explorer</div>
+
+    <div id="sfile-main.py" class="sidebar-item active-file" onclick="switchTab('main.py')">
+      main.py
     </div>
-    <div class="topbar-right">
-      <span style="font-size:10px;color:var(--muted2)">LIVE</span>
-      <div class="connection-dot"></div>
-      <button onclick="logout()" style="margin-left:10px;">Logout</button>
+
+    <div id="sfile-decoder.py" class="sidebar-item" onclick="switchTab('decoder.py')">
+      decoder.py
+      <span class="sidebar-badge" id="sidebar-badge">1</span>
     </div>
+
+    <div id="sfile-utils.py" class="sidebar-item" onclick="switchTab('utils.py')">
+      utils.py
+    </div>
+
+    <div class="sidebar-footer">3 files · Python 3.11</div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <div class="editor-container">
 
-  <div class="main">
-
-    <div class="sidebar">
-      <div class="sidebar-header">Explorer</div>
-
-      <div id="sfile-main.py" class="sidebar-item active-file" onclick="switchTab('main.py')">
-        main.py
-      </div>
-
-      <div id="sfile-decoder.py" class="sidebar-item" onclick="switchTab('decoder.py')">
+    <div class="tabs">
+      <span id="tab-main.py" class="active" onclick="switchTab('main.py')">main.py</span>
+      <span id="tab-decoder.py" onclick="switchTab('decoder.py')">
         decoder.py
-        <span class="sidebar-badge" id="sidebar-badge">1</span>
-      </div>
-
-      <div id="sfile-utils.py" class="sidebar-item" onclick="switchTab('utils.py')">
-        utils.py
-      </div>
-
-      <div class="sidebar-footer">3 files · Python 3.11</div>
+        <span class="tab-badge" id="tab-badge">1</span>
+      </span>
+      <span id="tab-utils.py" onclick="switchTab('utils.py')">utils.py</span>
     </div>
 
-    <div class="editor-container">
+    <div class="split-wrapper">
 
-      <div class="tabs">
-        <span id="tab-main.py" class="active" onclick="switchTab('main.py')">main.py</span>
-        <span id="tab-decoder.py" onclick="switchTab('decoder.py')">
-          decoder.py
-          <span class="tab-badge" id="tab-badge">1</span>
-        </span>
-        <span id="tab-utils.py" onclick="switchTab('utils.py')">utils.py</span>
+      <div class="left-pane" id="leftPane">
+        <div class="pane-header">
+          <span class="pane-header-title" id="leftPaneTitle">main.py</span>
+        </div>
+        <div class="code-editor-wrap">
+          <div class="line-nums" id="lineNums">1</div>
+          <div class="code-highlight" id="codeHighlight">
+            <div class="code-render" id="codeRender"></div>
+            <textarea class="code-textarea" id="codeTextarea"></textarea>
+          </div>
+        </div>
       </div>
 
-      <div class="split-wrapper">
+      <div class="split-divider" id="splitDivider"></div>
 
-        <div class="left-pane" id="leftPane">
-          <div class="pane-header">
-            <span class="pane-header-title" id="leftPaneTitle">main.py</span>
-          </div>
-          <div class="code-editor-wrap">
-            <div class="line-nums" id="lineNums">1</div>
-            <div class="code-highlight" id="codeHighlight">
-              <div class="code-render" id="codeRender"></div>
-              <textarea class="code-textarea" id="codeTextarea"></textarea>
-            </div>
-          </div>
+      <div class="right-pane" id="rightPane">
+        <div class="pane-header">
+          <span class="pane-header-title">decoder.py</span>
+          <button class="run-btn" id="runBtn" style="display:none" onclick="runDecoder()">▶ Run</button>
+          <button class="pane-close" onclick="closeRightPane()">✕</button>
         </div>
-
-        <div class="split-divider" id="splitDivider"></div>
-
-        <div class="right-pane" id="rightPane">
-          <div class="pane-header">
-            <span class="pane-header-title">decoder.py</span>
-            <button class="run-btn" id="runBtn" style="display:none" onclick="runDecoder()">▶ Run</button>
-            <button class="pane-close" onclick="closeRightPane()">✕</button>
-          </div>
-          <div class="decoder-scroll" id="decoderScroll"></div>
-        </div>
-
-      </div>
-
-      <div class="input-bar">
-        <div class="input-wrapper">
-          <textarea id="msg" rows="2" placeholder="Write packet... (max 200 chars)" oninput="updateCharCount()"></textarea>
-        </div>
-        <div class="send-wrap">
-          <button class="send" onclick="send()">Send</button>
-          <span class="char-count" id="charCount">0 / 200</span>
-        </div>
+        <div class="decoder-scroll" id="decoderScroll"></div>
       </div>
 
     </div>
-  </div>
 
-  <div class="statusbar">
-    <span id="cursorPos">Ln 1, Col 1</span>
+    <div class="input-bar">
+      <div class="input-wrapper">
+        <textarea id="msg" rows="2" placeholder="Write packet... (max 200 chars)" oninput="updateCharCount()"></textarea>
+      </div>
+      <div class="send-wrap">
+        <button class="send" onclick="send()">Send</button>
+        <span class="char-count" id="charCount">0 / 200</span>
+      </div>
+    </div>
+
   </div>
+</div>
+
+<div class="statusbar">
+  <span id="cursorPos">Ln 1, Col 1</span>
+</div>
 
 </div> <!-- END APP -->
 
