@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head>  
 <meta charset="UTF-8">
 <title>DevSnippet IDE</title>
 <link rel="icon" href="data:,">
@@ -11,11 +11,23 @@
 <body>
 
 <!-- LOGIN SCREEN -->
-<div id="loginBox" style="display:none; height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px; background:#0f1117; color:white;">
-  <h2>Login</h2>
-  <input id="email" type="email" placeholder="Email" style="padding:8px; width:250px;">
-  <input id="password" type="password" placeholder="Password" style="padding:8px; width:250px;">
-  <button onclick="login()" style="padding:8px 16px;">Login</button>
+<div id="loginBox" class="login-wrapper">
+
+  <div class="login-card">
+    <h2 class="login-title">DevSnippet</h2>
+    <p class="login-sub">Secure Access Portal</p>
+
+    <div class="login-field">
+      <input id="email" type="email" placeholder="Email">
+    </div>
+
+    <div class="login-field">
+      <input id="password" type="password" placeholder="Password">
+    </div>
+
+    <button class="login-btn" onclick="login()">Login</button>
+  </div>
+
 </div>
 
 <!-- APP WRAPPER -->
