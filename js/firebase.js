@@ -13,21 +13,16 @@ const firebaseConfig = {
   appId: "1:1039172978176:web:2e6c90fb8677e2af47bae5"
 };
 
-// Prevent duplicate initialization
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-// AUTH STATE LISTENER
 firebase.auth().onAuthStateChanged(user => {
-
   if (user) {
-
     myId = user.uid;
     db = firebase.database();
     messagesRef = db.ref("packets");
 
-    // Clear old listeners (important if logout/login happens)
     messagesRef.off();
 
     messagesRef.on("child_added", snapshot => {
@@ -43,33 +38,21 @@ firebase.auth().onAuthStateChanged(user => {
     document.getElementById("app").style.display = "block";
 
   } else {
-
-    // Clean up when logged out
-    if (messagesRef) {
-      messagesRef.off();
-    }
-
+    if (messagesRef) messagesRef.off();
     document.getElementById("loginBox").style.display = "block";
     document.getElementById("app").style.display = "none";
   }
 });
 
-// LOGIN
 window.login = function () {
-  const email = document.getElementById("email").value.trim();
+  const email    = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
-
-  if (!email || !password) {
-    alert("Enter email and password");
-    return;
-  }
-
+  if (!email || !password) { alert("Enter email and password"); return; }
   firebase.auth()
     .signInWithEmailAndPassword(email, password)
     .catch(err => alert(err.message));
 };
 
-// LOGOUT (optional but smart)
 window.logout = function () {
   firebase.auth().signOut();
 };

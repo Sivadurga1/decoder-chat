@@ -32,6 +32,16 @@ function updateEditor(){
 }
 
 function switchTab(file){
+  // Update tab bar active state
+  document.querySelectorAll('.tabs span').forEach(s => s.classList.remove('active'));
+  const tabEl = document.getElementById('tab-' + file);
+  if (tabEl) tabEl.classList.add('active');
+
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active-file'));
+  const sideEl = document.getElementById('sfile-' + file);
+  if (sideEl) sideEl.classList.add('active-file');
+
   fileContents[currentTab] = textarea.value;
   currentTab = file;
   textarea.value = fileContents[file] || '';
